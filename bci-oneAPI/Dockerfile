@@ -1,0 +1,15 @@
+#
+# Install Intel oneAPI Base Toolkit on SUSE SLE BCI
+#
+# https://www.intel.com/content/www/us/en/developer/tools/oneapi/toolkits.html#base-kit
+
+# https://registry.suse.com/
+FROM registry.suse.com/bci/bci-base:latest
+
+ENV ZYPPERCMD="zypper --non-interactive"
+
+RUN $ZYPPERCMD addrepo https://yum.repos.intel.com/oneapi oneAPI
+RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+
+RUN $ZYPPERCMD install intel-basekit
+RUN $ZYPPERCMD clean --all
