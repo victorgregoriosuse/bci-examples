@@ -11,5 +11,9 @@ ENV ZYPPERCMD="zypper --non-interactive"
 RUN $ZYPPERCMD addrepo https://yum.repos.intel.com/oneapi oneAPI
 RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 
+# prerequisites
+RUN $ZYPPERCMD install awk
+
+# install oneAPI
 RUN $ZYPPERCMD install intel-basekit
 RUN $ZYPPERCMD clean --all
