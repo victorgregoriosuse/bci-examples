@@ -23,8 +23,10 @@ sudo podman build -t jupyter --progress=plain .
 
 The entrypoint script will create the username jupyter inside the container
 and use $LOCAL_USERID to align the container's jupyter UID with the UID of 
-the user executing the podman run command.  Jupyter Notebook is then 
-launched from /home/virtenv. 
+the user executing the podman run command.  
+
+Jupyter Notebook is then launched from the virtual environment in 
+/home/virtenv with the start directory of /home/jupyter. 
 
 Passing $LOCAL_USERID is required.
 
