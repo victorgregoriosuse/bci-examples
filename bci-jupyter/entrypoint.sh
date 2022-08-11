@@ -5,7 +5,7 @@
 
 # add container user, passed LOCAL_USERID required
 CONT_UID=${LOCAL_USERID:?}
-CONT_UNAME=localuser
+CONT_UNAME=jupyter
 CONT_HOME=/home/${CONT_UNAME}
 
 echo "Starting with UID : $CONT_UID"
@@ -18,7 +18,7 @@ cp -ar /etc/skel/. ${CONT_HOME}/
 chown -R $CONT_UID $CONT_HOME
 
 # place container engine CMD into a script to facilitate an exec
-echo "$@" > /usr/local/bin/cmd.sh
+echo "$@" >> /usr/local/bin/cmd.sh
 chmod +x /usr/local/bin/cmd.sh
 
 # exec CMD as the local user 
