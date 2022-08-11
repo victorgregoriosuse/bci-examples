@@ -1,4 +1,4 @@
-# SLE BCI container with Jupyter Notebook
+# SLE BCI container with Jupyter Notebook and TensorFlow
 
 - https://registry.suse.com/
 - https://jupyter.org/
