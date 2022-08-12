@@ -7,6 +7,7 @@ RUN $ZYPPERCMD install python3 python3-pip
 RUN python3 -m venv /home/virtenv
 
 COPY requirements.txt .
+RUN . /home/virtenv/bin/activate && pip install --upgrade pip
 RUN . /home/virtenv/bin/activate && pip install -r requirements.txt 
 
 # jupyter web port
@@ -16,4 +17,4 @@ EXPOSE 8888/tcp
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD [".", "/home/virtenv/bin/activate", "&&", "jupyter", "notebook", "--no-browser", "--port=8888"]
+CMD [".", "/home/virtenv/bin/activate", "&&", "jupyter", "lab"]
