@@ -5,7 +5,7 @@
 
 # add container user, passed LOCAL_USERID required
 CONT_UID=${LOCAL_USERID:?}
-CONT_UNAME=jupyter
+CONT_UNAME=jupyterlab
 CONT_HOME=/home/${CONT_UNAME}
 VIRTENV=/home/virtenv
 
