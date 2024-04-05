@@ -19,3 +19,9 @@ docker compose up -d
 ssh localhost -p 1122 -l root
 
 ```
+
+## Shutdown
+```
+docker compose down
+
+```
