@@ -1,0 +1,21 @@
+FROM registry.suse.com/bci/bci-base:latest
+ENV ZYPPERCMD="zypper --non-interactive"
+
+# requirements 
+RUN $ZYPPERCMD install python3 python3-pip python3-devel wget awk gcc
+
+# build
+COPY --chmod=0700 install-miniconda.sh ./
+COPY --chmod=0700 install-vllm.sh ./
+RUN sh install-miniconda.sh
+RUN sh install-vllm.sh
+
+ARG MODEL
+ENV MODEL=${MODEL:-nvidia/nemotron-mini-4b-instruct}
+
+ARG PORT
+ENV PORT=${PORT:-8000}
+
+# serve
+COPY --chmod=0700 vllm-serve.sh ./
+CMD ["sh", "-c", "/vllm-serve.sh --port ${PORT} ${MODEL}"]
