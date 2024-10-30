@@ -5,7 +5,7 @@
 #
 
 VLLM_ARGS="$@"
-if [ -z "${PORT}" ]; then echo "${0##*/}: VLLM_ARGS environment variable is not set" >&2; exit 1; fi
+if [ -z "${VLLM_ARGS}" ]; then echo "${0##*/}: VLLM_ARGS environment variable is not set" >&2; exit 1; fi
 
 # load miniconda3
 source ~/miniconda3/bin/activate
