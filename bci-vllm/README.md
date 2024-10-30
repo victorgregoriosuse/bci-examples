@@ -50,6 +50,17 @@ To launch as non-root user on SLES,
 user$ podman run -d --device nvidia.com/gpu=all --runtime=crun --group-add keep-groups -p 8000:8000 --name sle-vllm sle-vllm
 ```
 
+### OpenAI API Server
+
+After running the container, the model will be downloaded. It will take some time for the server to launch.  Wait until you see this message before attempting to connect to the service.
+
+```
+INFO:     Started server process [39]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on socket ('0.0.0.0', 8000) (Press CTRL+C to quit)
+```
+
 ### Runtime Chat Template Errors
 
 Some models do not provide a chat template. For those models, manually specify their chat template in the `--chat-template` parameter.  If you get this error, you will need a chat template:
