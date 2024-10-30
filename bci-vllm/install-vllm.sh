@@ -15,5 +15,6 @@ pip install vllm
 
 # list installed packages
 conda list -n myenv
+conda deactivate
 
 exit $?
