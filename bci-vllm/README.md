@@ -1,14 +1,13 @@
-# README
 
 vLLM, or Virtual Large Language Model, is an open-source library that helps with the serving and inference of large language models (LLMs).  This repositiory provides a vLLM container on SUSE SLE Base Container Images (BCI) deployed as a server that implements the OpenAI API protocol.
 
-## PREP HOST
+# Prepare Host
 
-### Configure CDI
+## Configure CDI
 
 To launch a podman container with GPU access on SLES, first configure the Container Device Interface in `/etc/cdi/nvidia.yaml` using the NVIDIA Container Toolkit.  See instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html#procedure
 
-### Install crun
+## Install crun
 
 If you plan to access NVIDIA GPUs from a podman container as a non-root user, you will need to use the crun runtime found in SUSE's Package Hub repository: https://packagehub.suse.com/packages/crun/
 
@@ -16,13 +15,15 @@ If you plan to access NVIDIA GPUs from a podman container as a non-root user, yo
 zypper install crun
 ```
 
-## BUILD CONTAINER
+# Build Container
 
 ```
 podman build -t sle-vllm -f Containerfile
 ```
 
-## EXAMPLE RUN
+# Run Container
+
+## Interactive Run
 
 To launch as non-root user on SLES, 
 
@@ -63,7 +64,15 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on socket ('0.0.0.0', 8000) (Press CTRL+C to quit)
 ```
 
-### Runtime Chat Template Errors
+## Detached Run
+
+The container includes `/usr/local/bin/vllm-serve.sh` which loads the Miniconda environment needed to run `vllm serve`.  It can be passed any arguments needed for `vllm serve`.  **This is a limited script, and not able to launch a model which requires login to HuggingFace.**
+
+```
+podman run -d --device nvidia.com/gpu=all --runtime=crun --group-add keep-groups -p 8000:8000 --name sle-vllm sle-vllm vllm-serve.sh Qwen/Qwen2.5-0.5B-Instruct
+```
+
+## Chat Templates
 
 Some models do not provide a chat template. For those models, manually specify their chat template in the `--chat-template` parameter.  If you get this error, you will need a chat template:
 
@@ -73,16 +82,14 @@ As of transformers v4.44, default chat template is no longer allowed, so you mus
 
 See: https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html?ref=blog.mozilla.ai#chat-template
 
-## REFERENCE
+# Reference
 
 * vLLM: https://docs.vllm.ai/en/v0.6.0/getting_started/quickstart.html
 * Miniconda: https://docs.anaconda.com/miniconda/
 * SUSE SLE BCI: https://www.suse.com/products/base-container-images/
 * NVIDIA Container Device Interface: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html
 
-## MINICONDA BOM
-
-### Installed Packages
+# Minoconda BOM
 
 ```
 The following NEW packages will be INSTALLED:
@@ -111,7 +118,7 @@ The following NEW packages will be INSTALLED:
   zlib               pkgs/main/linux-64::zlib-1.2.13-h5eee18b_1 
 ```
 
-### Full BOM
+## Full BOM
 
 ```
 # packages in environment at /root/miniconda3/envs/myenv:

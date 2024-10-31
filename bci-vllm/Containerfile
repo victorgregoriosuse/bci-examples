@@ -4,8 +4,13 @@ ENV ZYPPERCMD="zypper --non-interactive"
 # requirements 
 RUN $ZYPPERCMD install python3 python3-devel wget awk
 
+WORKDIR /build
+
 # build
 COPY --chmod=0700 install-miniconda.sh ./
 COPY --chmod=0700 install-vllm.sh ./
 RUN sh install-miniconda.sh
 RUN sh install-vllm.sh
+
+# optional vllm serve script
+COPY --chmod=0700 vllm-serve.sh /usr/local/bin/
