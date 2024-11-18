@@ -51,7 +51,7 @@ def list_models(base_url, token):
     response = requests.get(url, headers=headers)
     return response.json()
 
-if __name__ == "__main__":
+def main():
     parser, args = parse_args()
     jwt_token, base_url = get_env_vars()
     
@@ -81,3 +81,6 @@ if __name__ == "__main__":
             if args.debug:
                 print("Response:", response)
             sys.exit(1)
+
+if __name__ == "__main__":
+    main()
