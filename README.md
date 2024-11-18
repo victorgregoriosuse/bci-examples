@@ -15,7 +15,7 @@ pip install -r requirements.txt
 Create a `.env` file in the root directory with your credentials:
 ```bash
 JWT_TOKEN=your_jwt_token_here  # Get this from your Open WebUI installation
-BASE_URL=https://your-openwebui-instance/api  # Your Open WebUI API endpoint
+BASE_URL=https://your-openwebui-instance/    # Your Open WebUI API endpoint
 ```
 
 ## Usage
