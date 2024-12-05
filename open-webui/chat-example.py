@@ -3,6 +3,7 @@ import os
 import sys
 import argparse
 from dotenv import load_dotenv
+import time  # Import time module for measuring duration
 
 # Load environment variables from .env file
 load_dotenv()
@@ -39,8 +40,24 @@ def chat_with_model(base_url, token, model, query):
         'model': model,
         'messages': [{'role': 'user', 'content': query}]
     }
+    
+    start_time = time.time()  # Start timing the API call
     response = requests.post(url, headers=headers, json=payload)
-    return response.json()
+    end_time = time.time()  # End timing the API call
+    
+    # Calculate the duration and tokens per second
+    duration = end_time - start_time
+    response_data = response.json()
+    
+    # Assuming the response contains a 'choices' key with 'content' that has tokens
+    if 'choices' in response_data and response_data['choices']:
+        tokens = len(response_data['choices'][0]['message']['content'].split())  # Count tokens
+        tokens_per_second = tokens / duration if duration > 0 else 0
+        print(f"Tokens per second: {tokens_per_second:.2f}")
+    else:
+        print("Error: Unexpected response format")
+    
+    return response_data
 
 def list_models(base_url, token):
     url = f"{base_url}/api/models"
@@ -60,8 +77,7 @@ def main():
         if args.debug:
             print("Debug - Full response:", models)
         for model_info in models['data']:
-            parameter_size = model_info.get('ollama', {}).get('details', {}).get('parameter_size', 'unknown size')
-            print(f"- {model_info['id']} ({parameter_size})")
+            print(f"- {model_info['id']} ({model_info['ollama']['details'].get('parameter_size', 'unknown size')})")
     else:
         # Validate required args for chat
         if not args.model or not args.query:
