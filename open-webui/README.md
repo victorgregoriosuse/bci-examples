@@ -20,16 +20,16 @@ BASE_URL=https://your-openwebui-instance/    # Your Open WebUI API endpoint
 
 ## Usage
 
-The `chat-example.py` script demonstrates two main API interactions:
+The `owui-chat.py` script demonstrates two main API interactions:
 
 1. List available models:
 ```bash
-python chat-example.py --list-models
+python owui-chat.py --list-models
 ```
 
 2. Chat with a model:
 ```bash
-python chat-example.py --model gemma:2b --query "Hello, how are you?"
+python owui-chat.py --model gemma:2b --query "Hello, how are you?"
 ```
 
 ### Optional Parameters
