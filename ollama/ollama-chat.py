@@ -19,7 +19,7 @@ def measure_ollama_speed(llm, prompt):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Measure Ollama response speed')
-    parser.add_argument('--prompt', type=str, default="Tell me a short story about a robot learning to paint.",
+    parser.add_argument('--prompt', type=str, default="Explain to me what Linux is.",
                       help='The prompt to send to Ollama')
     parser.add_argument('--url', type=str, default="http://localhost:11434",
                       help='The URL for the Ollama server')
