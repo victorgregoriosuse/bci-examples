@@ -60,7 +60,8 @@ def main():
         if args.debug:
             print("Debug - Full response:", models)
         for model_info in models['data']:
-            print(f"- {model_info['id']} ({model_info['ollama']['details'].get('parameter_size', 'unknown size')})")
+            parameter_size = model_info.get('ollama', {}).get('details', {}).get('parameter_size', 'unknown size')
+            print(f"- {model_info['id']} ({parameter_size})")
     else:
         # Validate required args for chat
         if not args.model or not args.query:
