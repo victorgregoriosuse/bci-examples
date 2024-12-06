@@ -11,7 +11,7 @@ load_dotenv()
 def parse_args():
     parser = argparse.ArgumentParser(description='API Test Script')
     parser.add_argument('-m', '--model', help='Model name to use for the API request')
-    parser.add_argument('-q', '--query', help='Query to send to the model')
+    parser.add_argument('-p', '--prompt', help='Prompt to send to the model')
     parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
     parser.add_argument('-l', '--list-models', action='store_true', help='List available models')
     return parser, parser.parse_args()
@@ -30,7 +30,7 @@ def get_env_vars():
 
     return jwt_token, base_url
 
-def chat_with_model(base_url, token, model, query):
+def chat_with_model(base_url, token, model, prompt):
     url = f"{base_url}/api/chat/completions"
     headers = {
         'Authorization': f'Bearer {token}',
@@ -38,7 +38,7 @@ def chat_with_model(base_url, token, model, query):
     }
     payload = {
         'model': model,
-        'messages': [{'role': 'user', 'content': query}]
+        'messages': [{'role': 'user', 'content': prompt}]
     }
     
     start_time = time.time()  # Start timing the API call
@@ -80,10 +80,10 @@ def main():
             print(f"- {model_info['id']} ({model_info['ollama']['details'].get('parameter_size', 'unknown size')})")
     else:
         # Validate required args for chat
-        if not args.model or not args.query:
-            parser.error("--model and --query are required when not using --list-models")
+        if not args.model or not args.prompt:
+            parser.error("--model and --prompt are required when not using --list-models")
         
-        response = chat_with_model(base_url, jwt_token, args.model, args.query)
+        response = chat_with_model(base_url, jwt_token, args.model, args.prompt)
         if args.debug:
             print("Debug - Full response:", response)
             

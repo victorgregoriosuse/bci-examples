@@ -29,14 +29,14 @@ python owui-chat.py --list-models
 
 2. Chat with a model:
 ```bash
-python owui-chat.py --model gemma:2b --query "Hello, how are you?"
+python owui-chat.py --model gemma:2b --prompt "Hello, how are you?"
 ```
 
 ### Optional Parameters
 
 - `-d, --debug`: Enable debug output to see full API responses
 - `-m, --model`: Specify which model to use (required for chat)
-- `-q, --query`: Your input text (required for chat)
+- `-p, --prompt`: Your input text (required for chat)
 - `-l, --list-models`: List all available models
 
 ## API Documentation
