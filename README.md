@@ -12,11 +12,11 @@ pip install -r requirements.txt
 
 
 ```bash
-python3 ./ollama-chat.py --url http://localhost:11434 --model llama3.1 --prompt "Hello, how are you?"      
+python3 ./ollama-chat.py --url http://localhost:11434 --model llama3.1 --prompt "Explain to me what Linux is."      
 
 Arguments:
   -h, --help       show this help message and exit
   --prompt PROMPT  The prompt to send to Ollama
-  --url URL        The URL for the Ollama server
+  --base-url URL   The URL for the Ollama server
   --model MODEL    The model to use (e.g., llama2, mistral, codellama)
 ```
