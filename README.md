@@ -30,7 +30,7 @@ Before running the application, you need to create a `.env` file to configure th
 You can run the application using the following command:
 
 ```bash
-python3 ./ollama-chat.py --base-url http://localhost:11434 --model llama3.1 --prompt "Explain to me what Linux is."      
+python3 ./ollama-chat.py --model llama3.1 --prompt "Explain to me what Linux is."      
 ```
 
 ### Arguments:

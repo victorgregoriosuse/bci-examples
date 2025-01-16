@@ -4,7 +4,7 @@ import argparse
 import os
 from dotenv import load_dotenv
 from opentelemetry import trace
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter  # Correct import for version 1.29.0
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
@@ -30,9 +30,9 @@ tracer = trace.get_tracer(__name__)
 
 def chat_with_model(llm, prompt):
     with tracer.start_as_current_span("chat_with_model"):
-        start_time = time.time()  # Start timing the API call
-        response = llm.invoke(prompt)  # Call the Ollama API
-        end_time = time.time()  # End timing the API call
+        start_time = time.time()        # Start timing the API call
+        response = llm.invoke(prompt)   # Call the Ollama API
+        end_time = time.time()          # End timing the API call
         
         # Calculate elapsed time
         elapsed_time = end_time - start_time
