@@ -1,4 +1,4 @@
-# Specify a compatible version of urllib3
+# specify a macos openssl compatible version of urllib3
 urllib3==1.26.15
 langchain-ollama
 argparse
