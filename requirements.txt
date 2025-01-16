@@ -1,4 +1,7 @@
-# specify a macos openssl compatible version of urllib3
-urllib3==1.26.15
+urllib3==1.26.15    # specify a macos openssl compatible version of urllib3
+python-dotenv
 langchain-ollama
 argparse
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp
