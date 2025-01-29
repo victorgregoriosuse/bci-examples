@@ -1,5 +1,6 @@
 from langchain_ollama import OllamaLLM
 import time
+import os
 import argparse
 from dotenv import load_dotenv
 
