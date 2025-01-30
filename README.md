@@ -31,8 +31,8 @@ Before running the application, you need to create a `.env` file to configure th
 2. **Add the following content** to the `.env` file:
 
    ```plaintext
-   # Base URL for the Ollama server
    OLLAMA_BASE_URL=http://localhost:11434
+   LLM_MODEL=llama2:7b
    ```
 
    You can change the value to point to your specific Ollama server if it is running on a different host or port.
@@ -42,20 +42,26 @@ Before running the application, you need to create a `.env` file to configure th
 You can run the Ollama chat application using the following command:
 
 ```bash
-python3 ./ollama-chat.py --model llama2 --prompt "Explain to me what Linux is."
+python3 ./ollama-chat.py --prompt "Explain to me what Linux is."
 ```
 
 ### Arguments:
 
 - `-h, --help`: Show this help message and exit.
-- `-p, --prompt`: The prompt to send to Ollama (default: "Explain to me what Linux is.").
-- `-b, --base-url`: The base URL for the Ollama server (default: "http://localhost:11434").
-- `-m, --model`: The model to use (e.g., llama2, llama3).
+- `-p, --prompt`: The prompt to send to Ollama (required).
+- `-b, --base-url`: The base URL for the Ollama server (default from .env).
+- `-m, --model`: The model to use (default from .env).
 
 ## Example
 
 To run the application with a specific model and prompt, use:
 
 ```bash
-python3 ./ollama-chat.py --model llama2 --prompt "What is quantum computing?"
+python3 ./ollama-chat.py --prompt "What is quantum computing?"
+```
+
+To run the application with instrumentation (untested, beta), use:
+
+```bash
+opentelemetry-instrument --traces_exporter console python3 ollama-chat.py --prompt "What is quantum computing?"
 ```
