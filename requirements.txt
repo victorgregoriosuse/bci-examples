@@ -3,3 +3,7 @@ urllib3==1.26.15
 langchain-ollama
 argparse
 python-dotenv
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation
+opentelemetry-instrumentation-requests

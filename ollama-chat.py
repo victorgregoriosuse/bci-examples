@@ -1,36 +1,64 @@
-from langchain_ollama import OllamaLLM
-import time
 import os
 import argparse
 from dotenv import load_dotenv
+from langchain_ollama import OllamaLLM
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
 # Load environment variables from .env file
 load_dotenv()
 
-def measure_ollama_speed(llm, prompt):
-    start_time = time.time()
-    response = llm.invoke(prompt)
-    end_time = time.time()
-    
-    # Estimate tokens (rough approximation: 4 chars = 1 token)
-    tokens = len(response) / 4
-    elapsed_time = end_time - start_time
-    tokens_per_second = tokens / elapsed_time if elapsed_time > 0 else 0
-    
-    print(f"Response: {response}\n")
-    print(f"Estimated tokens: {tokens:.0f}")
-    print(f"Time taken: {elapsed_time:.2f} seconds")
-    print(f"Tokens per second: {tokens_per_second:.2f}")
+# Check for required environment variables
+if not os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT"):
+    raise ValueError("OTEL_EXPORTER_OTLP_ENDPOINT must be set in .env file")
+
+# Set OpenTelemetry environment variables
+os.environ["OTEL_EXPORTER_OTLP_ENDPOINT"] = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+os.environ["OTEL_TRACES_EXPORTER"] = "otlp"
+os.environ["OTEL_METRICS_EXPORTER"] = "otlp"
+os.environ["OTEL_EXPORTER_OTLP_PROTOCOL"] = "grpc"
+
+# Set up tracing
+tracer_provider = TracerProvider()
+otlp_exporter = OTLPSpanExporter()
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
+trace.set_tracer_provider(tracer_provider)
+
+# Get a tracer
+tracer = trace.get_tracer(__name__)
+
+# Auto-instrumentation for Requests
+RequestsInstrumentor().instrument()
+
+def chat_with_model(prompt, base_url, model_name):
+    with tracer.start_as_current_span("chat_with_model") as span:
+        span.set_attribute("prompt", prompt)
+        span.set_attribute("model", model_name)
+        
+        # Create an instance of the Ollama model
+        llm = OllamaLLM(model=model_name, base_url=base_url)
+        
+        # Call the Ollama model
+        response = llm.invoke(prompt)
+        return response
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Measure Ollama response speed')
-    parser.add_argument('-p', '--prompt', type=str, default="Explain to me what Linux is.",
-                        help='The prompt to send to Ollama')
-    parser.add_argument('-b', '--base-url', type=str, default=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-                        help='The base URL for the Ollama server')
-    parser.add_argument('-m', '--model', type=str, default="llama2",
-                        help='The model to use (e.g., llama2, mistral, codellama)')
-    
+    parser = argparse.ArgumentParser(description='Chat with Ollama LLMs')
+    parser.add_argument('-p', '--prompt', type=str, required=True,
+                        help='The prompt to send to Ollama (required)')
+    parser.add_argument('-b', '--base-url', type=str, default=os.getenv("OLLAMA_BASE_URL"),
+                        help='The base URL for the Ollama server (default from .env)')
+    parser.add_argument('-m', '--model', type=str, default=os.getenv("DEFAULT_MODEL"),
+                        help='The model to use (default from .env)')
+
     args = parser.parse_args()
-    llm = OllamaLLM(model=args.model, base_url=args.base_url)
-    measure_ollama_speed(llm, args.prompt)
+    if not args.base_url:
+        raise ValueError("Base URL is required in command line or .env file")
+    if not args.model:
+        raise ValueError("Model is required in command line or .env file")
+    response = chat_with_model(args.prompt, args.base_url, args.model)
+    print(f"Response: {response}")
