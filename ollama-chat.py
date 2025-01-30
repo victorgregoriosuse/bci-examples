@@ -7,6 +7,13 @@ from opentelemetry.instrumentation.requests import RequestsInstrumentor
 # Load environment variables from .env file
 load_dotenv()
 
+# Check for required environment variables
+if not os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT"):
+    raise ValueError("OTEL_EXPORTER_OTLP_ENDPOINT must be set in .env file")
+
+# Set the environment variable for OpenTelemetry
+os.environ["OTEL_EXPORTER_OTLP_ENDPOINT"] = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+
 # Auto-instrumentation for Requests
 RequestsInstrumentor().instrument()
 
@@ -28,5 +35,9 @@ if __name__ == "__main__":
                         help='The model to use (default from .env)')
 
     args = parser.parse_args()
+    if not args.base_url:
+        raise ValueError("Base URL is required in command line or .env file")
+    if not args.model:
+        raise ValueError("Model is required in command line or .env file")
     response = chat_with_model(args.prompt, args.base_url, args.model)
     print(f"Response: {response}")
