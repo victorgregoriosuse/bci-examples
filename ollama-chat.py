@@ -2,7 +2,6 @@ from langchain_ollama import OllamaLLM
 import time
 import os
 import argparse
-<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
 from opentelemetry import trace
@@ -10,12 +9,6 @@ from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExport
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
-=======
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
->>>>>>> main
 
 # Load environment variables from .env file
 load_dotenv()
