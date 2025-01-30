@@ -60,8 +60,33 @@ To run the application with a specific model and prompt, use:
 python3 ./ollama-chat.py --prompt "What is quantum computing?"
 ```
 
-To run the application with instrumentation (untested, beta), use:
+## Running with OpenTelemetry Collector
+
+To run the application with OpenTelemetry Collector, use the following command to start the collector.  This will start the OpenTelemetry Collector and the application. The application will send traces to the collector, which will then forward them to Jaeger for visualization.  To view the traces, access the Jaeger UI at `http://localhost:16686` in your web browser.
+
+```bash
+docker-compose up
+```
+
+Then, run the application with the following command to instrument the application and send traces to the collector:
 
 ```bash
 opentelemetry-instrument --traces_exporter console python3 ollama-chat.py --prompt "What is quantum computing?"
 ```
+
+For more detailed logs, you can use the following commands to view the live logs from the collector:
+
+```bash
+docker-compose logs -f otel-collector
+```
+
+To view all logs:
+
+```bash
+docker-compose logs otel-collector
+```
+
+To view logs from the last minute:
+
+```bash
+docker-compose logs --since 1m otel-collector  # last minute

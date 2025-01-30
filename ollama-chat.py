@@ -3,6 +3,10 @@ import argparse
 from dotenv import load_dotenv
 from langchain_ollama import OllamaLLM
 from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
 # Load environment variables from .env file
 load_dotenv()
@@ -11,19 +15,36 @@ load_dotenv()
 if not os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT"):
     raise ValueError("OTEL_EXPORTER_OTLP_ENDPOINT must be set in .env file")
 
-# Set the environment variable for OpenTelemetry
+# Set OpenTelemetry environment variables
 os.environ["OTEL_EXPORTER_OTLP_ENDPOINT"] = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+os.environ["OTEL_TRACES_EXPORTER"] = "otlp"
+os.environ["OTEL_METRICS_EXPORTER"] = "otlp"
+os.environ["OTEL_EXPORTER_OTLP_PROTOCOL"] = "grpc"
+
+# Set up tracing
+tracer_provider = TracerProvider()
+otlp_exporter = OTLPSpanExporter()
+span_processor = BatchSpanProcessor(otlp_exporter)
+tracer_provider.add_span_processor(span_processor)
+trace.set_tracer_provider(tracer_provider)
+
+# Get a tracer
+tracer = trace.get_tracer(__name__)
 
 # Auto-instrumentation for Requests
 RequestsInstrumentor().instrument()
 
 def chat_with_model(prompt, base_url, model_name):
-    # Create an instance of the Ollama model
-    llm = OllamaLLM(model=model_name, base_url=base_url)
-    
-    # Call the Ollama model
-    response = llm.invoke(prompt)  # This will make an HTTP request to the Ollama server
-    return response
+    with tracer.start_as_current_span("chat_with_model") as span:
+        span.set_attribute("prompt", prompt)
+        span.set_attribute("model", model_name)
+        
+        # Create an instance of the Ollama model
+        llm = OllamaLLM(model=model_name, base_url=base_url)
+        
+        # Call the Ollama model
+        response = llm.invoke(prompt)
+        return response
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Chat with Ollama LLMs')
