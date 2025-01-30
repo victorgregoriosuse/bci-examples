@@ -23,7 +23,9 @@ os.environ["OTEL_EXPORTER_OTLP_PROTOCOL"] = "grpc"
 
 # Set up tracing
 tracer_provider = TracerProvider()
-otlp_exporter = OTLPSpanExporter()
+otlp_exporter = OTLPSpanExporter(
+    insecure=True,
+)
 span_processor = BatchSpanProcessor(otlp_exporter)
 tracer_provider.add_span_processor(span_processor)
 trace.set_tracer_provider(tracer_provider)
