@@ -38,15 +38,24 @@ RequestsInstrumentor().instrument()
 
 def chat_with_model(prompt, base_url, model_name):
     with tracer.start_as_current_span("chat_with_model") as span:
-        span.set_attribute("prompt", prompt)
-        span.set_attribute("model", model_name)
+        # Add attributes to the span
+        span.set_attribute("prompt.text", prompt)
+        span.set_attribute("model.name", model_name)
+        span.set_attribute("base.url", base_url)
         
-        # Create an instance of the Ollama model
-        llm = OllamaLLM(model=model_name, base_url=base_url)
-        
-        # Call the Ollama model
-        response = llm.invoke(prompt)
-        return response
+        try:
+            # Create an instance of the Ollama model
+            llm = OllamaLLM(model=model_name, base_url=base_url)
+            
+            # Call the Ollama model
+            with tracer.start_as_current_span("ollama.invoke") as invoke_span:
+                response = llm.invoke(prompt)
+                invoke_span.set_attribute("response.length", len(str(response)))
+                return response
+                
+        except Exception as e:
+            span.set_status(trace.Status(trace.StatusCode.ERROR, str(e)))
+            raise
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Chat with Ollama LLMs')
