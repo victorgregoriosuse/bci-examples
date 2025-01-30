@@ -7,6 +7,7 @@ from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from langchain_core.callbacks.base import BaseCallbackHandler
 
 # Load environment variables from .env file
 load_dotenv()
@@ -36,16 +37,40 @@ tracer = trace.get_tracer(__name__)
 # Auto-instrumentation for Requests
 RequestsInstrumentor().instrument()
 
+class OTelCallbackHandler(BaseCallbackHandler):
+    def __init__(self, span):
+        self.span = span
+        self.total_tokens = 0
+        self.prompt_tokens = 0
+        self.completion_tokens = 0
+        
+    def on_llm_start(self, serialized, prompts, **kwargs):
+        self.span.set_attribute("llm.prompts", str(prompts))
+        
+    def on_llm_end(self, response, **kwargs):
+        # Ollama doesn't provide token counts directly, but we can estimate
+        self.span.set_attribute("llm.response", str(response))
+        if hasattr(response, 'llm_output') and response.llm_output:
+            if 'token_usage' in response.llm_output:
+                usage = response.llm_output['token_usage']
+                self.span.set_attribute("llm.total_tokens", usage.get('total_tokens', 0))
+                self.span.set_attribute("llm.prompt_tokens", usage.get('prompt_tokens', 0))
+                self.span.set_attribute("llm.completion_tokens", usage.get('completion_tokens', 0))
+
 def chat_with_model(prompt, base_url, model_name):
     with tracer.start_as_current_span("chat_with_model") as span:
-        # Add attributes to the span
         span.set_attribute("prompt.text", prompt)
         span.set_attribute("model.name", model_name)
         span.set_attribute("base.url", base_url)
         
         try:
-            # Create an instance of the Ollama model
-            llm = OllamaLLM(model=model_name, base_url=base_url)
+            # Create an instance of the Ollama model with callbacks
+            callback = OTelCallbackHandler(span)
+            llm = OllamaLLM(
+                model=model_name, 
+                base_url=base_url,
+                callbacks=[callback]
+            )
             
             # Call the Ollama model
             with tracer.start_as_current_span("ollama.invoke") as invoke_span:
