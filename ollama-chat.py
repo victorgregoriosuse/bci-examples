@@ -1,6 +1,8 @@
 from langchain_ollama import OllamaLLM
 import time
+import os
 import argparse
+<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
 from opentelemetry import trace
@@ -8,6 +10,12 @@ from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExport
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
+=======
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+>>>>>>> main
 
 # Load environment variables from .env file
 load_dotenv()
@@ -54,7 +62,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Measure Ollama response speed and tokens used')
     parser.add_argument('-p', '--prompt', type=str, default="Explain to me what Linux is.",
                         help='The prompt to send to Ollama')
-    parser.add_argument('-b', '--base-url', type=str, default="http://localhost:11434",
+    parser.add_argument('-b', '--base-url', type=str, default=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
                         help='The base URL for the Ollama server')
     parser.add_argument('-m', '--model', type=str, default="llama2",
                         help='The model to use (e.g., llama2, mistral, codellama)')
