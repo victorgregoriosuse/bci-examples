@@ -10,6 +10,7 @@ RUN echo "root:${PASSWD}" | chpasswd
 
 # ssh and host keys
 RUN $ZYPPERCMD install openssh
+RUN $ZYPPERCMD clean -a
 RUN /usr/bin/ssh-keygen -A
 RUN mkdir /var/run/sshd
 RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config

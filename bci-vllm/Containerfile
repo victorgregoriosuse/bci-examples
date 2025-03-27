@@ -3,6 +3,7 @@ ENV ZYPPERCMD="zypper --non-interactive"
 
 # requirements 
 RUN $ZYPPERCMD install python3 python3-devel wget awk
+RUN $ZYPPERCMD clean --all
 
 WORKDIR /build
 
