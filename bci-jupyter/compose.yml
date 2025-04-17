@@ -1,0 +1,6 @@
+services:
+
+  jupyterlab:
+    image: bci-jupyter
+    ports:
+      - 8888:8888

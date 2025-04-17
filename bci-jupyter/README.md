@@ -7,36 +7,21 @@
 
 - Storage: Resulting image is ~410 MB
 
-# Podman Example
 
-## Build
+# Build
 
 JupyterLab is installed into the /home/virtenv virtual environment.
 
 ```
-sudo podman build -t jupyterlab --progress=plain .
+docker buildx build -t sle-jupyter -f Containerfile .
 ```
 
-## Run
-
-The entrypoint script will create the username jupyter inside the container
-and use $LOCAL_USERID to align the container's jupyter UID with the UID of 
-the user executing the podman run command.  
-
-JupyterLab is then launched from the virtual environment in 
-/home/virtenv with the start directory of /home/jupyter. 
-
-Environment Variables
-
-- LOCAL_USERID is required and should match the local UID
-- DEBUG=1 is optional, enables verbosity and editing of virtenv
+# Run
 
 ```
-mkdir -p jupyterlab
-sudo podman run \
- --mount type=bind,source="$(pwd)/jupyterlab",target=/home/jupyterlab \
- --network host \
- --env LOCAL_USERID=$UID \
- --env DEBUG=0 \
- localhost/jupyterlab
+docker compose up -d
 ```
+
+# Notes
+
+- https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
