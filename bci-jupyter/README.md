@@ -7,19 +7,18 @@
 
 - Storage: Resulting image is ~410 MB
 
-
 # Build
 
-JupyterLab is installed into the /home/virtenv virtual environment.
-
 ```
-docker buildx build -t sle-jupyter -f Containerfile .
+docker buildx build -t bci-jupyter -f Containerfile .
 ```
 
 # Run
 
 ```
-docker compose up -d
+# APP_UID sets the uid of jupyter user inside the container, defaults to 1000 if not set
+# This will also mount ./notebooks as the $HOME of the jupyter lab user
+APP_UID=$(id -u) docker compose up -d
 ```
 
 # Notes
