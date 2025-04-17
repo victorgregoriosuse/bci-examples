@@ -1,6 +1,6 @@
 services:
 
-  bci-sshd:
-    image: sle-sshd
+  sshd:
+    image: bci-sshd
     ports:
       - 1122:22

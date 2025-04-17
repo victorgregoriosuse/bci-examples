@@ -9,7 +9,7 @@
 You must set a password for at build time through a build argument.
 
 ```
-docker buildx build -t sle-sshd --build-arg PASSWD=<SET_A_PASSWORD_HERE> -f Containerfile .
+docker buildx build -t bci-sshd --build-arg PASSWD=<SET_A_PASSWORD_HERE> -f Containerfile .
 ```
 
 ## Run
