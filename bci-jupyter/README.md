@@ -18,6 +18,7 @@ docker buildx build -t bci-jupyter -f Containerfile .
 ```
 # APP_UID sets the uid of jupyter user inside the container, defaults to 1000 if not set
 # This will also mount ./notebooks as the $HOME of the jupyter lab user
+
 APP_UID=$(id -u) docker compose up -d
 ```
 
