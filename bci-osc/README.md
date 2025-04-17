@@ -7,11 +7,11 @@
 # Build
 
 ```
-docker buildx build -t sle-osc -f Containerfile .
+docker buildx build -t bci-osc -f Containerfile .
 ```
 
 #  Run
 
 ```
-docker run -it sle-osc
+docker run -it bci-osc
 ```
