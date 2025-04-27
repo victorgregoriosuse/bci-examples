@@ -1,7 +1,7 @@
 services:
 
   jupyterlab:
-    image: bci-jupyter
+    image: sle-bci-jupyterlab
     ports:
       - 8888:8888
     volumes:
