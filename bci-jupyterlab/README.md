@@ -10,7 +10,7 @@
 # Build
 
 ```
-docker buildx build -t sle-bci-jupyterlab -f Dockerfile .
+docker buildx build -t bci-jupyterlab -f Dockerfile .
 ```
 
 # Run
