@@ -3,13 +3,17 @@ FROM registry.suse.com/bci/bci-base:latest
 
 # packages
 ENV ZYPPERCMD="zypper --non-interactive"
-RUN $ZYPPERCMD install python3 python3-pip
+RUN $ZYPPERCMD install python311 python311-pip python311-virtualenv
 RUN $ZYPPERCMD clean --all 
 
-# python virtual env
-ENV VIRTENV=/app/venv
-RUN python3 -m venv ${VIRTENV}
-RUN ${VIRTENV}/bin/pip install jupyterlab
+# jupyter main virtenv
+ENV JUPYTER_VENV=/app/venv/python311
+RUN python3.11 -m venv ${JUPYTER_VENV}
+RUN ${JUPYTER_VENV}/bin/pip3 install jupyterlab
+RUN ${JUPYTER_VENV}/bin/pip3 install ipykernel
+
+# unnecessary
+#RUN ${JUPYTER_VENV}/bin/python3 -m ipykernel install --sys-prefix --prefix="/app/venv/python311" --name python-3.11-env --display-name "Python 3.11" 
 
 # jupyterlab default port
 EXPOSE 8888 
@@ -21,4 +25,4 @@ RUN chmod +x /app/entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh"]
 
 # this is consumed by the entrypoint script
-CMD ["/app/venv/bin/jupyter", "lab", "--no-browser", "--ip=0.0.0.0", "--port=8888"]
+CMD ["/app/venv/python311/bin/jupyter", "lab", "--no-browser", "--ip=0.0.0.0", "--port=8888"]
