@@ -6,6 +6,7 @@ JUPYTER_VENV=/app/jupyterhub
 APP_UNAME=${APP_UNAME:-jupyter}
 APP_UID=${APP_UID:-1000}
 APP_HOME=/home/${APP_UNAME}
+APP_PASS=${APP_PASS:-CHANGEME}
 
 echo "Starting with $APP_UNAME($APP_UID)"
 groupadd mail
