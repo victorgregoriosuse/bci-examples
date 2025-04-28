@@ -1,28 +1,27 @@
 #!/bin/bash
 
+JUPYTER_VENV=/app/jupyterhub
+
 # default to uid 1000 inside the container
-CONT_UID=${APP_UID:-1000}
-CONT_UNAME=jupyter
+APP_UNAME=${APP_UNAME:-jupyter}
+APP_UID=${APP_UID:-1000}
+APP_HOME=/home/${APP_UNAME}
 
-CONT_HOME=/home/${CONT_UNAME}
-
-echo "Starting with $CONT_UNAME($CONT_UID)"
+echo "Starting with $APP_UNAME($APP_UID)"
 groupadd mail
-useradd -s /bin/bash -u $CONT_UID -d $CONT_HOME -m $CONT_UNAME
-echo "jupyter:${APP_PASS}" | chpasswd
+useradd -s /bin/bash -u $APP_UID -d $APP_HOME -m $APP_UNAME
+echo "${APP_UNAME}:${APP_PASS}" | chpasswd
 
 # useradd will not apply skel files if the container homedir is present, so we force it
-cp -ar /etc/skel/. ${CONT_HOME}/
+cp -ar /etc/skel/. ${APP_HOME}/
 
 # set ownership of homedir and venv to container user
-chown -R $CONT_UID $CONT_HOME
-
-JUPYTER_VENV=/app/jupyterhub
-chown -R $CONT_UID $JUPYTER_VENV
+chown -R $APP_UID $APP_HOME
+chown -R $APP_UID $JUPYTER_VENV
 
 # Containerfile CMD inside a script to facilitate an exec
 echo "$@" > /app/cmd.sh
 chmod +x /app/cmd.sh
 
 # exec CMD as the local user 
-exec su - $CONT_UNAME -c /app/cmd.sh
+exec su - $APP_UNAME -c /app/cmd.sh

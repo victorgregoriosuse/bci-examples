@@ -6,7 +6,6 @@ ENV ZYPPERCMD="zypper --non-interactive"
 RUN $ZYPPERCMD install nodejs npm
 RUN $ZYPPERCMD install python3 python3-pip python3-virtualenv
 RUN $ZYPPERCMD install python311 python311-pip python311-virtualenv
-#RUN $ZYPPERCMD install python312 python312-pip python312-virtualenv
 RUN $ZYPPERCMD clean --all 
 
 # jupyter main virtenv
@@ -18,12 +17,8 @@ RUN npm install -g configurable-http-proxy
 # config
 RUN mkdir -p ${JUPYTER_VENV}/etc/jupyterhub/
 COPY jupyterhub_config.py ${JUPYTER_VENV}/etc/jupyterhub/jupyterhub_config.py
-#RUN cd ${JUPYTER_VENV}/etc/jupyterhub/ && ${JUPYTER_VENV}bin/jupyterhub --generate-config
 
-# unnecessary
-#RUN ${JUPYTER_VENV}/bin/python3 -m ipykernel install --sys-prefix --prefix="/app/venv/python311" --name python-3.11-env --display-name "Python 3.11" 
-
-# jupyterlab default port
+# jupyterhub default port
 EXPOSE 8888 
 
 # set up an entrypoint to allow exec of jupyter as non-root user in the container
