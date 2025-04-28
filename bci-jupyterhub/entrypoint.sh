@@ -20,6 +20,15 @@ cp -ar /etc/skel/. ${APP_HOME}/
 chown -R $APP_UID $APP_HOME
 chown -R $APP_UID $JUPYTER_VENV
 
+# setup virtual envs
+su - $APP_UNAME -c "python3.6 -mvenv $APP_HOME/venv/3.6"
+su - $APP_UNAME -c "$APP_HOME/venv/3.6/bin/pip install ipykernel"
+su - $APP_UNAME -c "$APP_HOME/venv/3.6/bin/python -m ipykernel install --user --name=my_env_3.6 --display-name=\"My Env 3.6\""
+
+su - $APP_UNAME -c "python3.11 -mvenv $APP_HOME/venv/3.11"
+su - $APP_UNAME -c "$APP_HOME/venv/3.11/bin/pip install ipykernel"
+su - $APP_UNAME -c "$APP_HOME/venv/3.11/bin/python -m ipykernel install --user --name=my_env_3.11 --display-name=\"My Env 3.11\""
+
 # Containerfile CMD inside a script to facilitate an exec
 echo "$@" > /app/cmd.sh
 chmod +x /app/cmd.sh
