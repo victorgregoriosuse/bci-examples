@@ -1,27 +1,40 @@
 # SLE BCI container with JupyterLab
 
-- https://registry.suse.com/
-- https://jupyter.org/
+## Requirements
 
-# Requirements
+- Storage: image is ~549 MB
 
-- Storage: Resulting image is ~549 MB
+## Docker Deployment
 
-# Build
-
+### Build Image
 ```
 docker buildx build -t bci-jupyterlab -f Dockerfile .
 ```
 
-# Run
+### Configure & Run
 
+The `compose.yml` requires environment variables to be set beforehand
+
+#### **Variables**
+
+* `APP_UNAME`:  the conainer username that runs jupyterhub (default = jupyter)
+* `APP_UID`:    the uid for the container username (default = 1000)
+
+#### **Example Run**
 ```
-# APP_UNAMAE the username inside the container (default = jupyter)
-# APP_UID    the uid for the username (default = 1000)
+export APP_UNAME=$USER
+export APP_UID=$(id -u)
 
-APP_UNAME=$USER APP_UID=$(id -u) docker compose up -d
+docker compose up
 ```
+Watch the output for a URL that contains the auth token.  The access port is mapped in `compose.yml`.
 
-# Notes
+# Reference
 
 - https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
+
+
+
+
+
+
