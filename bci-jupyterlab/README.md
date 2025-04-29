@@ -6,12 +6,12 @@
 
 ## Docker Deployment
 
-### Build Image
-```
+### 1. Build Image
+```bash
 docker buildx build -t bci-jupyterlab -f Dockerfile .
 ```
 
-### Configure & Run
+### 2. Configure & Run
 
 The `compose.yml` requires environment variables to be set beforehand
 
@@ -21,7 +21,7 @@ The `compose.yml` requires environment variables to be set beforehand
 * `APP_UID`:    the uid for the container username (default = 1000)
 
 #### **Example Run**
-```
+```bash
 export APP_UNAME=$USER
 export APP_UID=$(id -u)
 
