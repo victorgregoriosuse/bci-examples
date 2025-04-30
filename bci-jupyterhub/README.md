@@ -9,8 +9,8 @@
     * UID: `APP_UID`
     * Password: `APP_PASS`
 * JupyterHub Ports
-    * Docker: 8888/tcp as defined in `compose.yml`
-    * Helm: 30000-32767/tcp as defined in `bci-jupyterhub-helm/values.yaml`
+    * Docker: `8888/tcp` as defined in `compose.yml`
+    * Helm: `30000-32767/tcp` as defined in `bci-jupyterhub-helm/values.yaml`
 * JupterHub launches JupyterLab after authentication
 * JupyterLab environment
     * `entrypoint.sh` installs Python virtual environments and configures each virtual environment as an ipykernel
