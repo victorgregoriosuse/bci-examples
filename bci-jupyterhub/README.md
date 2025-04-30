@@ -16,8 +16,7 @@
     * `entrypoint.sh` installs Python virtual environments and configures each virtual environment as an ipykernel
     * Python 3.6: `~/venv/3.6` 
     * Python 3.11: `~/venv/3.11`
-
-<img src="./docs/jupyterlab-environment.png" alt="BCI JupyterLab Environment" height="300">
+    * <img src="./docs/jupyterlab-environment.png" alt="BCI JupyterLab Environment" height="300">
 
 
 ## Docker Deployment
