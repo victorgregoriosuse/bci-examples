@@ -1,4 +1,4 @@
-# Default values for bci-jupyterhub-helm.
+# Default values for bci-jupyterhub.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
