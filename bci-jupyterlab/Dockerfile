@@ -3,8 +3,9 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 # packages
 ENV ZYPPERCMD="zypper --non-interactive"
-RUN $ZYPPERCMD install python3 python3-pip python3-virtualenv
 RUN $ZYPPERCMD install python311 python311-pip python311-virtualenv
+# uncomment to also install python 3.6
+# RUN $ZYPPERCMD install python3 python3-pip python3-virtualenv
 
 # clean up
 RUN $ZYPPERCMD clean --all 
