@@ -5,6 +5,7 @@ metadata:
   labels:
     {{- include "bci-jupyterhub.labels" . | nindent 4 }}
 spec:
+  restartPolicy: {{ .Values.restartPolicy }}
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
