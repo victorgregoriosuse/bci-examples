@@ -13,11 +13,8 @@
     * Helm: `30000-32767/tcp` as defined in `bci-jupyterhub-helm/values.yaml`
 * JupterHub launches JupyterLab after authentication
 * JupyterLab environment
-    * `entrypoint.sh` installs Python virtual environments and configures each virtual environment as an ipykernel
-    * Python 3.6: `~/venv/3.6` 
-    * Python 3.11: `~/venv/3.11`
-    * <img src="./docs/jupyterlab-environment.png" alt="BCI JupyterLab Environment" height="300">
-
+    * `entrypoint.sh` installs Python virtual environments (e.g., `~/venv/3.11`)
+    * `entrypoint.sh` configures virtual environments as an ipykernel
 
 ## Docker Deployment
 
