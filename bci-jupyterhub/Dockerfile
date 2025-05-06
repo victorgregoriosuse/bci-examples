@@ -1,5 +1,5 @@
 # https://registry.suse.com/
-FROM registry.suse.com/bci/bci-base:latest
+FROM registry.suse.com/bci/bci-base:15.6
 
 # packages
 ENV ZYPPERCMD="zypper --non-interactive"
@@ -11,9 +11,10 @@ RUN $ZYPPERCMD install nodejs npm
 RUN $ZYPPERCMD clean --all 
 
 # jupyter main virtenv
+COPY requirements.txt /app/requirements.txt
 ENV JUPYTER_VENV=/app/jupyterhub
 RUN python3.11 -m venv ${JUPYTER_VENV}
-RUN ${JUPYTER_VENV}/bin/pip3 install wheel jupyterlab jupyterhub ipywidgets
+RUN ${JUPYTER_VENV}/bin/pip3 install -r /app/requirements.txt
 RUN npm install -g configurable-http-proxy
 
 # jupyterhub config file

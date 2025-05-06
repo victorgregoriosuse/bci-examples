@@ -1,5 +1,5 @@
 # https://registry.suse.com/
-FROM registry.suse.com/bci/bci-base:latest
+FROM registry.suse.com/bci/bci-base:15.6
 
 # packages
 ENV ZYPPERCMD="zypper --non-interactive"
@@ -10,9 +10,10 @@ RUN $ZYPPERCMD install python311 python311-pip python311-virtualenv
 RUN $ZYPPERCMD clean --all 
 
 # jupyter main virtenv
+COPY requirements.txt /app/requirements.txt
 ENV JUPYTER_VENV=/app/jupyterlab
 RUN python3.11 -m venv ${JUPYTER_VENV}
-RUN ${JUPYTER_VENV}/bin/pip3 install jupyterlab
+RUN ${JUPYTER_VENV}/bin/pip3 install -r /app/requirements.txt
 
 # jupyterlab default port
 EXPOSE 8888 
