@@ -10,7 +10,7 @@ RUN $ZYPPERCMD install python311 python311-pip python311-virtualenv
 # RUN $ZYPPERCMD install python3 python3-pip python3-virtualenv
 
 # improve the jupyterlab terminal experience
-RUN $ZYPPERCMD install which procps lsof
+RUN $ZYPPERCMD install which procps lsof netcat-openbsd
 
 # clean up
 RUN $ZYPPERCMD clean --all 
