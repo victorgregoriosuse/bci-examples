@@ -71,7 +71,7 @@ Configure the `OTEL_EXPORTER_OTLP_ENDPOINT` in the `.env` file to point to your 
 Use the following command to start a sandbox collector in Docker.  This will start the OpenTelemetry Collector and Jaeger. The application will send traces to the collector, which will then forward them to Jaeger for visualization.  To view the traces, access the Jaeger UI at http://localhost:16686 in your web browser.
 
 ```bash
-docker-compose up
+cd otel-collector && docker-compose up
 ```
 
 ## Running the Application with OpenTelemetry Collector
