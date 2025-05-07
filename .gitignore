@@ -2,4 +2,4 @@
 venv/
 *.pyc
 *.swp
-docker/*.log
+*.log
