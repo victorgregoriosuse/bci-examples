@@ -3,15 +3,22 @@ FROM registry.suse.com/bci/bci-base:15.6
 
 # packages
 ENV ZYPPERCMD="zypper --non-interactive"
+
+# python 3.11
 RUN $ZYPPERCMD install python311 python311-pip python311-virtualenv
-# uncomment to also install python 3.6
+# python 3.6
 # RUN $ZYPPERCMD install python3 python3-pip python3-virtualenv
+
+# improve the jupyterlab terminal experience
+RUN $ZYPPERCMD install which procps lsof
+
+# required by jupyterhub to launch jupyterlab
 RUN $ZYPPERCMD install nodejs npm
 
 # clean up
 RUN $ZYPPERCMD clean --all 
 
-# jupyter main virtenv
+# jupyter app virtenv
 COPY requirements.txt /app/requirements.txt
 ENV JUPYTER_VENV=/app/jupyterhub
 RUN python3.11 -m venv ${JUPYTER_VENV}
