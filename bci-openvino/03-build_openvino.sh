@@ -12,9 +12,12 @@ if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 sudo zypper --non-interactive install python311-devel python311-pybind11
 
 cd $BUILD_SRC_PREFIX
-git clone https://github.com/openvinotoolkit/openvino.git
+if [ ! -f openvino/.git ]; then
+        git clone https://github.com/openvinotoolkit/openvino.git
+fi
 
 pushd openvino
+git fetch --prune --all
 git checkout $BUILD_OPENVINO_RELEASE
 git submodule update --init --recursive
 

@@ -12,14 +12,22 @@ if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 sudo zypper --non-interactive install python3-devel python3-numpy-devel libtiff-devel
 
 cd $BUILD_SRC_PREFIX
-git clone https://github.com/opencv/opencv.git
-git clone https://github.com/opencv/opencv_contrib.git
+
+if [ ! -f opencv/.git ]; then
+    git clone https://github.com/opencv/opencv.git
+fi
+
+if [ ! -f opencv_contrib/.git ]; then
+    git clone https://github.com/opencv/opencv_contrib.git
+fi
 
 pushd opencv_contrib
+git fetch --all --prune
 git checkout $BUILD_OPENCV_RELEASE
 popd
 
 pushd opencv
+git fetch --all --prune
 git checkout $BUILD_OPENCV_RELEASE
 
 rm -rf build && mkdir build && cd build

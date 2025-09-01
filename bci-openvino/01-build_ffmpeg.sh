@@ -12,9 +12,12 @@ if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 sudo zypper --non-interactive install nasm opencl-headers
 
 cd $SRC_PREFIX
-git clone https://github.com/FFmpeg/FFmpeg.git
+if [ ! -f FFmpeg/.git ]; then
+    git clone https://github.com/FFmpeg/FFmpeg.git
+fi
 pushd FFmpeg
-git checkout release/4.4
+git fetch --all --prune
+git checkout $BUILD_FFMPEG_RELEASE
 
 # pic needed for opencv
 CC=$BUILD_CC CXX=$BUILD_CXX ./configure --enable-opencl --enable-shared --enable-pic --prefix=$BUILD_INSTALL_PREFIX
