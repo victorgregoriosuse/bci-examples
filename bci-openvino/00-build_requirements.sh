@@ -2,9 +2,8 @@
 # build tools
 #
 
-MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
-
 # load build shared settings if not loaded
+MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
 if [ -z $BUILD_SHARED_SETTINGS ]; then source $MY_DIRNAME/build_settings.sh; fi
 
 sudo zypper --non-interactive install git cmake make gcc14 gcc14-c++ clang14 clang14-devel ccache
