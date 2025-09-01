@@ -2,8 +2,6 @@
 
 unset -v BUILD_SHARED_SETTINGS
 
-export BUILD_CC=gcc-14
-export BUILD_CXX=g++-14
 export BUILD_SRC_PREFIX=$HOME
 export BUILD_INSTALL_PREFIX=/opt/openvino
 

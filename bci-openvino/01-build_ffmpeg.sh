@@ -2,6 +2,9 @@
 # ffmpeg
 #
 
+BUILD_CC=gcc-14
+BUILD_CXX=g++-14
+
 # load build shared settings if not loaded
 MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
 if [ -z $BUILD_SHARED_SETTINGS ]; then source $MY_DIRNAME/build_settings.sh; fi
