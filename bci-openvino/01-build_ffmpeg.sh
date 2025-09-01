@@ -5,9 +5,9 @@
 BUILD_CC=gcc-14
 BUILD_CXX=g++-14
 
-# load build shared settings if not loaded
+# load build shared settings
 MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
-if [ -z $BUILD_SHARED_SETTINGS ]; then source $MY_DIRNAME/build_settings.sh; fi
+source $MY_DIRNAME/build_settings.sh
 
 # load oneapi if not loaded
 if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
