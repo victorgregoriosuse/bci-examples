@@ -30,9 +30,9 @@ source $BUILD_PYTHON_VENV/bin/activate
 pip3 install --no-input -r $BUILD_SRC_PREFIX/openvino/src/bindings/python/wheel/requirements-dev.txt
 pip3 install --no-input pybind11-stubgen pre-commit 
 
-# for shellcheck and level-zero
+# for shellcheck, level-zero, and opencl cpp headers
 sudo suseconnect -p PackageHub/15.7/x86_64
-sudo zypper --non-interactive install ShellCheck level-zero level-zero-devel
+sudo zypper --non-interactive install ShellCheck level-zero level-zero-devel opencl-cpp-headers
 
 rm -rf build && mkdir build && cd build
 cmake   -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
