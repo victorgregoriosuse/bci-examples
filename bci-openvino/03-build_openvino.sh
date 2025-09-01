@@ -2,8 +2,10 @@
 # openvino
 #
 
-# load build shared settings
-if [ -z $BUILD_SHARED_SETTINGS ]; then source build_settings.sh; fi
+MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
+
+# load build shared settings if not loaded
+if [ -z $BUILD_SHARED_SETTINGS ]; then source $MY_DIRNAME/build_settings.sh; fi
 
 # load oneapi if not loaded
 if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
