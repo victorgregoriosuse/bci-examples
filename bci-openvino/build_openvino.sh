@@ -23,7 +23,7 @@ export MANPATH=$INSTALL_PREFIX/share/man:$MANPATH
 # build tools
 #
 
-sudo zypper --non-interactive install git cmake make gcc14 gcc14++
+sudo zypper --non-interactive install git cmake make gcc14 gcc14-c++ clang14 clang14-devel ccache
 
 #
 # intel onapi
@@ -78,8 +78,7 @@ cmake   -D CMAKE_BUILD_TYPE=Release  \
         -D CMAKE_C_COMPILER=$BUILD_CC \
         -D CMAKE_CXX_COMPILER=$BUILD_CXX \
         -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
-        -D BUILD_SHARED_LIBS=true \
-        ..
+        -D BUILD_SHARED_LIBS=true ..
 
 make -j$(nproc) || exit 1
 sudo make install || exit 1
@@ -93,21 +92,20 @@ sudo zypper --non-interactive install python311-devel python311-pybind11
 
 cd $SRC_PREFIX
 git clone https://github.com/openvinotoolkit/openvino.git
+
 pushd openvino
 git checkout $OPENVINO_RELEASE
 git submodule update --init --recursive
 
-# just needed for build 
+# venv needed for build 
 python3.11 -m venv $HOME/openvino-venv
 source $HOME/openvino-venv/bin/activate
-# pip3 install -r ./src/bindings/python/wheel/requirements-dev.txt
-# a couple more needed that are not in the .txt
-pip3 install --no-input pybind11-stubgen pre-commit setuptools wheel build patchelf
+pip3 install --no-input -r $SRC_PREFIX/openvino/src/bindings/python/wheel/requirements-dev.txt
+pip3 install --no-input pybind11-stubgen pre-commit 
 
-# for shellcheck
+# for shellcheck and level-zero
 sudo suseconnect -p PackageHub/15.7/x86_64
-sudo zypper --non-interactive install ShellCheck
-
+sudo zypper --non-interactive install ShellCheck level-zero level-zero-devel
 
 rm -rf build && mkdir build && cd build
 cmake   -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
@@ -117,12 +115,10 @@ cmake   -D CMAKE_INSTALL_PREFIX=$INSTALL_PREFIX \
         -D ENABLE_INTEL_GPU=ON \
         -D CMAKE_C_COMPILER=$BUILD_CC \
         -D CMAKE_CXX_COMPILER=$BUILD_CXX \
-        -D OpenCL_HPP_INCLUDE_DIR=/opt/intel/oneapi/compiler/$ONEAPI_RELEASE/include/sycl/backend/ \
+        -D OpenCL_HPP_INCLUDE_DIR=/opt/intel/oneapi/compiler/$ONEAPI_RELEASE/include/ \
         -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
         -D BUILD_SHARED_LIBS=true \
         -D ENABLE_CPPLINT=OFF \
-        -D CMAKE_CXX_STANDARD=17 \
-        -D CMAKE_CXX_STANDARD_REQUIRED=ON \
         ..
 
 cmake --build . --config Release -j$(nproc) || exit 1
