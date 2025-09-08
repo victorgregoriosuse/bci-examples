@@ -24,14 +24,16 @@ sudo zypper --non-interactive install intel-oneapi-base-toolkit intel-oneapi-mkl
 
 #
 # intel datacenter gpu
-# https://dgpu-docs.intel.com/driver/installation.html#sles
-# 
+# https://dgpu-docs.intel.com/driver/installation-lts2.html#sles
+#
 
-. /etc/os-release
-VERSION_SP=${VERSION_ID//./sp}
-sudo zypper addrepo -f -r \
-    https://repositories.intel.com/gpu/sles/${VERSION_SP}/unified/intel-gpu-${VERSION_SP}.repo
-sudo rpm --import https://repositories.intel.com/gpu/intel-graphics.key
+# not supported yet for sles15sp7
+#
+# . /etc/os-release
+# VERSION_SP=${VERSION_ID//./sp}
+# sudo zypper addrepo -f -r \
+#     https://repositories.intel.com/gpu/sles/${VERSION_SP}/lts/2523/unified/intel-gpu-${VERSION_SP}.repo
+# sudo rpm --import https://repositories.intel.com/gpu/intel-graphics.key
 
 exit $?
 
