@@ -2,6 +2,7 @@
 # opencl
 #
 # https://www.intel.com/content/www/us/en/developer/articles/tool/opencl-drivers.html
+# https://dgpu-docs.intel.com/driver/installation.html#sles
 # 
 
 BUILD_CC=gcc-14
