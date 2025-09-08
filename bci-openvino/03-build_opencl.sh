@@ -3,7 +3,7 @@
 #
 # https://www.intel.com/content/www/us/en/developer/articles/tool/opencl-drivers.html
 # https://dgpu-docs.intel.com/driver/installation.html#sles
-# 
+# https://dgpu-docs.intel.com/driver/installation-rolling.html#sles 
 
 BUILD_CC=gcc-14
 BUILD_CXX=g++-14

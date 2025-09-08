@@ -29,17 +29,11 @@ sudo zypper --non-interactive install intel-oneapi-base-toolkit intel-oneapi-mkl
 
 . /etc/os-release
 VERSION_SP=${VERSION_ID//./sp}
-if [[ ! " 15sp4 15sp5 15sp6 " =~ " ${VERSION_SP} " ]]; then
-    echo "SLES version ${VERSION_ID} not supported"
-	exit 1
-else
-    sudo zypper addrepo -f -r https://repositories.intel.com/gpu/sles/${VERSION_SP}/lts/2350/unified/intel-gpu-${VERSION_SP}.repo
-    sudo rpm --import https://repositories.intel.com/gpu/intel-graphics.key
+sudo zypper addrepo -f -r \
+    https://repositories.intel.com/gpu/sles/${VERSION_SP}/unified/intel-gpu-${VERSION_SP}.repo
+sudo rpm --import https://repositories.intel.com/gpu/intel-graphics.key
 
-	if ! sudo grep -q "priority=98" /etc/zypp/repos.d/intel-gpu-${VERSION_ID}.repo; then
-       	echo "priority=98" | sudo tee -a /etc/zypp/repos.d/intel-gpu-${VERSION_ID}.repo
-    fi
-fi
+exit $?
 
 # computing and media runtimes
 sudo zypper install -y \
