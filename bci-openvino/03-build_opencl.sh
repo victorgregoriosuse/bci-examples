@@ -1,6 +1,8 @@
 #
 # opencl
 #
+# https://www.intel.com/content/www/us/en/developer/articles/tool/opencl-drivers.html
+# 
 
 BUILD_CC=gcc-14
 BUILD_CXX=g++-14
