@@ -8,7 +8,7 @@ source $MY_DIRNAME/build_settings.sh
 
 # needed tools
 # sudo zypper --non-interactive install git gcc14 gcc14-c++ clang14 clang14-devel ccache
-sudo zypper --non-interactive install git
+sudo zypper --non-interactive install git which
 
 # intel requirements
 sudo zypper --non-interactive install -t pattern devel_basis

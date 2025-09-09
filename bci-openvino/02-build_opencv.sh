@@ -2,8 +2,8 @@
 # opencv
 #
 
-BUILD_CC=gcc-14
-BUILD_CXX=g++-14
+BUILD_CC=gcc-7
+BUILD_CXX=g++-7
 
 # load build shared settings
 MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
@@ -45,4 +45,5 @@ cmake   -D CMAKE_BUILD_TYPE=Release  \
 
 make -j$(nproc) || exit 1
 sudo make install || exit 1
+ldd $(which opencv_visualisation)
 popd
