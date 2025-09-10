@@ -22,7 +22,7 @@ sudo suseconnect -p sle-module-hpc/${VERSION_ID}/x86_64
 sudo zypper install -y gcc13 gcc13-c++ libstdc++6-devel-gcc13
 
 # basic tools not covered above
-sudo zypper install -y git which cmake
+sudo zypper install -y git which cmake ninja
 
 # this could be problematic, lets make sure it is not installed
 sudo zypper remove -y ccache

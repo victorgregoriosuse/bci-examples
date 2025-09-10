@@ -26,6 +26,11 @@ sudo zypper install -y ShellCheck level-zero level-zero-devel opencl-cpp-headers
 #####################################################################
 # python venv for build
 
+cd $BUILD_SRC_PREFIX
+if [ ! -f openvino/.git ]; then
+        git clone https://github.com/openvinotoolkit/openvino.git
+fi
+
 if [ -d $BUILD_PYTHON_VENV ]; then
     rm -rf $BUILD_PYTHON_VENV
 fi
@@ -38,10 +43,6 @@ pip3 install --no-input pybind11-stubgen pre-commit
 # build
 
 cd $BUILD_SRC_PREFIX
-if [ ! -f openvino/.git ]; then
-        git clone https://github.com/openvinotoolkit/openvino.git
-fi
-
 pushd openvino
 git fetch --prune --all
 git checkout $BUILD_OPENVINO_RELEASE
@@ -51,7 +52,9 @@ rm -rf build && mkdir build && cd build
 # -D CMAKE_CXX_FLAGS="-lstdc++fs" 
 # -D CMAKE_CXX_FLAGS="-I/usr/include/c++/7" 
 # -D CMAKE_CXX_STANDARD=17 \
-cmake   -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
+# -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+cmake   -G "Ninja" \
+        -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
         -D CMAKE_BUILD_TYPE=Release \
         -D ENABLE_PYTHON=ON \
         -D PYTHON_EXECUTABLE=$(which python3) \
