@@ -17,8 +17,9 @@ sudo zypper install -y -t pattern devel_basis
 sudo zypper install -y kernel-devel
 
 # gcc13-c++ is in sle-module-hpc
-sudo suseconnect -p sle-module-hpc/15.7/x86_64
-sudo zypper install -y gcc13 gcc13-c++
+source /etc/os-release
+sudo suseconnect -p sle-module-hpc/${VERSION_ID}/x86_64
+sudo zypper install -y gcc13 gcc13-c++ libstdc++6-devel-gcc13
 
 # basic tools not covered above
 sudo zypper install -y git which cmake
