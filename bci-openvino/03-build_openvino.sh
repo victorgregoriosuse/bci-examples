@@ -18,6 +18,22 @@ if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 
 sudo zypper install -y python311-devel python311-pybind11
 
+# for shellcheck, level-zero, and opencl cpp headers
+source /etc/os-release
+sudo suseconnect -p PackageHub/${VERSION_ID}/x86_64
+sudo zypper install -y ShellCheck level-zero level-zero-devel opencl-cpp-headers
+
+#####################################################################
+# python venv for build
+
+if [ -d $BUILD_PYTHON_VENV ]; then
+    rm -rf $BUILD_PYTHON_VENV
+fi
+python3.11 -m venv $BUILD_PYTHON_VENV
+source $BUILD_PYTHON_VENV/bin/activate
+pip3 install --no-input -r $BUILD_SRC_PREFIX/openvino/src/bindings/python/wheel/requirements-dev.txt
+pip3 install --no-input pybind11-stubgen pre-commit 
+
 #####################################################################
 # build
 
@@ -30,17 +46,6 @@ pushd openvino
 git fetch --prune --all
 git checkout $BUILD_OPENVINO_RELEASE
 git submodule update --init --recursive
-
-# venv needed for build 
-python3.11 -m venv $BUILD_PYTHON_VENV
-source $BUILD_PYTHON_VENV/bin/activate
-pip3 install --no-input -r $BUILD_SRC_PREFIX/openvino/src/bindings/python/wheel/requirements-dev.txt
-pip3 install --no-input pybind11-stubgen pre-commit 
-
-# for shellcheck, level-zero, and opencl cpp headers
-source /etc/os-release
-sudo suseconnect -p PackageHub/${VERSION_ID}/x86_64
-sudo zypper install -y ShellCheck level-zero level-zero-devel opencl-cpp-headers
 
 rm -rf build && mkdir build && cd build
 # -D CMAKE_CXX_FLAGS="-lstdc++fs" 
