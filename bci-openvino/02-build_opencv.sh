@@ -1,9 +1,10 @@
-#
 # opencv
-#
 
-BUILD_CC=gcc-7
-BUILD_CXX=g++-7
+#####################################################################
+# settings
+
+BUILD_CC=gcc-13
+BUILD_CXX=g++-13
 
 # load build shared settings
 MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
@@ -12,7 +13,13 @@ source $MY_DIRNAME/build_settings.sh
 # load oneapi if not loaded
 if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 
-sudo zypper --non-interactive install python3-devel python3-numpy-devel libtiff-devel
+#####################################################################
+# requirements
+
+sudo zypper install -y python3-devel python3-numpy-devel libtiff-devel
+
+#####################################################################
+# build
 
 cd $BUILD_SRC_PREFIX
 
