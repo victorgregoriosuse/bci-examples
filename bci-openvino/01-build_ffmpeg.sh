@@ -1,21 +1,30 @@
-#
 # ffmpeg
-#
 
-BUILD_CC=gcc-14
-BUILD_CXX=g++-14
+#####################################################################
+# settings
 
-# load build shared settings if not loaded
+BUILD_CC=gcc-13
+BUILD_CXX=g++-13
+
+# load build shared settings
 MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
-if [ -z $BUILD_SHARED_SETTINGS ]; then source $MY_DIRNAME/build_settings.sh; fi
+source $MY_DIRNAME/build_settings.sh
 
 # load oneapi if not loaded
 if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 
-sudo zypper --non-interactive install nasm opencl-headers
+#####################################################################
+# requirements
+
+sudo zypper install -y nasm opencl-headers
+
+#####################################################################
+# build
 
 cd $SRC_PREFIX
-if [ ! -f FFmpeg/.git ]; then
+if [ -d FFmpeg ]; then
+    pushd FFmpeg && make distclean && popd
+else
     git clone https://github.com/FFmpeg/FFmpeg.git
 fi
 pushd FFmpeg
@@ -23,7 +32,8 @@ git fetch --all --prune
 git checkout $BUILD_FFMPEG_RELEASE
 
 # pic needed for opencv
-CC=$BUILD_CC CXX=$BUILD_CXX ./configure --enable-opencl --enable-shared --enable-pic --prefix=$BUILD_INSTALL_PREFIX
+./configure --cc=$BUILD_CC --enable-opencl --enable-shared --enable-pic --prefix=$BUILD_INSTALL_PREFIX
 make -j$(nproc) || exit 1
 sudo make install || exit 1
+ldd $(which ffmpeg)
 popd

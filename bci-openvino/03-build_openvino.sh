@@ -1,18 +1,25 @@
-#
 # openvino
-#
 
-BUILD_CC=icx
-BUILD_CXX=icpx
+#####################################################################
+# settings
 
-# load build shared settings if not loaded
+BUILD_CC=gcc-13
+BUILD_CXX=g++-13
+
+# load build shared settings
 MY_DIRNAME=$(dirname "${BASH_SOURCE[0]}")
-if [ -z $BUILD_SHARED_SETTINGS ]; then source $MY_DIRNAME/build_settings.sh; fi
+source $MY_DIRNAME/build_settings.sh
 
 # load oneapi if not loaded
 if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 
-sudo zypper --non-interactive install python311-devel python311-pybind11
+#####################################################################
+# requirements
+
+sudo zypper install -y python311-devel python311-pybind11
+
+#####################################################################
+# build
 
 cd $BUILD_SRC_PREFIX
 if [ ! -f openvino/.git ]; then
@@ -31,10 +38,14 @@ pip3 install --no-input -r $BUILD_SRC_PREFIX/openvino/src/bindings/python/wheel/
 pip3 install --no-input pybind11-stubgen pre-commit 
 
 # for shellcheck, level-zero, and opencl cpp headers
-sudo suseconnect -p PackageHub/15.7/x86_64
-sudo zypper --non-interactive install ShellCheck level-zero level-zero-devel opencl-cpp-headers
+source /etc/os-release
+sudo suseconnect -p PackageHub/${VERSION_ID}/x86_64
+sudo zypper install -y ShellCheck level-zero level-zero-devel opencl-cpp-headers
 
 rm -rf build && mkdir build && cd build
+# -D CMAKE_CXX_FLAGS="-lstdc++fs" 
+# -D CMAKE_CXX_FLAGS="-I/usr/include/c++/7" 
+# -D CMAKE_CXX_STANDARD=17 \
 cmake   -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
         -D CMAKE_BUILD_TYPE=Release \
         -D ENABLE_PYTHON=ON \
@@ -42,14 +53,16 @@ cmake   -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
         -D ENABLE_INTEL_GPU=ON \
         -D CMAKE_C_COMPILER=$BUILD_CC \
         -D CMAKE_CXX_COMPILER=$BUILD_CXX \
+        -D CMAKE_CXX_FLAGS="-I/opt/intel/oneapi/2025.2/include" \
         -D OpenCL_HPP_INCLUDE_DIR=/opt/intel/oneapi/$BUILD_ONEAPI_RELEASE/include/ \
         -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
         -D BUILD_SHARED_LIBS=true \
         -D ENABLE_CPPLINT=OFF \
+        -D ENABLE_CLDNN=ON \
         ..
-
 cmake --build . --config Release -j$(nproc) || exit 1
 sudo cmake --build . --target install || exit 1
 popd
 
+# load openvino vars
 source $BUILD_INSTALL_PREFIX/setupvars.sh
