@@ -71,6 +71,7 @@ cmake   -G "Ninja" \
         -D BUILD_SHARED_LIBS=true \
         -D ENABLE_CPPLINT=OFF \
         ..
+
 cmake --build . --config Release -j$(nproc) || exit 1
 sudo cmake --build . --target install || exit 1
 popd
