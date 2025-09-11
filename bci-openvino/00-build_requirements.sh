@@ -10,16 +10,21 @@ source $MY_DIRNAME/build_settings.sh
 #####################################################################
 # global requirements
 
-# intel oneapi requirements
+# installs gcc7, intel oneapi requirements
 sudo zypper install -y -t pattern devel_basis
 
 # intel oneapi's intel-pti wants kernel-devel
 sudo zypper install -y kernel-devel
 
-# gcc13-c++ is in sle-module-hpc
+# installs gcc13, gcc13-c++ is in sle-module-hpc
 source /etc/os-release
 sudo suseconnect -p sle-module-hpc/${VERSION_ID}/x86_64
 sudo zypper install -y gcc13 gcc13-c++ libstdc++6-devel-gcc13
+
+# installs gcc14, clang14 is in packagehub
+# source /etc/os-release
+# sudo suseconnect -p PackageHub/${VERSION_ID}/x86_64
+# sudo zypper install -y gcc14 gcc14-c++ libstdc++6-devel-gcc14 clang14 clang14-devel libopencl-clang14 python3-clang14
 
 # basic tools not covered above
 sudo zypper install -y git which cmake ninja

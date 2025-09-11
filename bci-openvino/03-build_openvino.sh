@@ -16,6 +16,7 @@ if [ -z $SETVARS_COMPLETED ]; then source /opt/intel/oneapi/setvars.sh; fi
 #####################################################################
 # requirements
 
+# for python venv used in build
 sudo zypper install -y python311-devel python311-pybind11
 
 # for shellcheck, level-zero, and opencl cpp headers
@@ -37,6 +38,7 @@ fi
 python3.11 -m venv $BUILD_PYTHON_VENV
 source $BUILD_PYTHON_VENV/bin/activate
 pip3 install --no-input -r $BUILD_SRC_PREFIX/openvino/src/bindings/python/wheel/requirements-dev.txt
+pip3 install --no-input -r $BUILD_SRC_PREFIX/openvino/cmake/developer_package/ncc_naming_style/requirements_dev.txt
 pip3 install --no-input pybind11-stubgen pre-commit 
 
 #####################################################################
@@ -52,8 +54,10 @@ rm -rf build && mkdir build && cd build
 # -D CMAKE_CXX_FLAGS="-lstdc++fs" 
 # -D CMAKE_CXX_FLAGS="-I/usr/include/c++/7" 
 # -D CMAKE_CXX_STANDARD=17 \
-# -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+# -D ENABLE_CLDNN=ON \
 cmake   -G "Ninja" \
+        -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+        -D ENABLE_CLDNN=ON \
         -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
         -D CMAKE_BUILD_TYPE=Release \
         -D ENABLE_PYTHON=ON \
@@ -66,7 +70,6 @@ cmake   -G "Ninja" \
         -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
         -D BUILD_SHARED_LIBS=true \
         -D ENABLE_CPPLINT=OFF \
-        -D ENABLE_CLDNN=ON \
         ..
 cmake --build . --config Release -j$(nproc) || exit 1
 sudo cmake --build . --target install || exit 1
