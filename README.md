@@ -1,4 +1,4 @@
-# sle-bci-examples
+# bci-examples
 SUSE SLE BCI Examples
 
 # SLE BCI
