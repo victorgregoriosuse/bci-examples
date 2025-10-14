@@ -1,5 +1,5 @@
 # https://registry.suse.com/
-FROM registry.suse.com/bci/bci-base:15.6
+FROM registry.suse.com/bci/bci-base:15.7
 
 # packages
 ENV ZYPPERCMD="zypper --non-interactive"
