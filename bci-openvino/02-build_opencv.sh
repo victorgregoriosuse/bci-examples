@@ -41,7 +41,8 @@ git fetch --all --prune
 git checkout $BUILD_OPENCV_RELEASE
 
 rm -rf build && mkdir build && cd build
-cmake   -D CMAKE_BUILD_TYPE=Release  \
+cmake   -G "Ninja" \
+        -D CMAKE_BUILD_TYPE=Release  \
         -D CMAKE_INSTALL_PREFIX=$BUILD_INSTALL_PREFIX \
         -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
         -D BUILD_opencv_python3=ON \

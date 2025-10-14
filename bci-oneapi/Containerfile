@@ -1,5 +1,5 @@
 #
-# Install Intel oneAPI Base Toolkit on SUSE SLE BCI
+# Install Intel oneAPI Base Toolkit with MKL on SUSE SLE BCI
 #
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/toolkits.html#base-kit
 
@@ -11,9 +11,11 @@ ENV ZYPPERCMD="zypper --non-interactive"
 RUN $ZYPPERCMD addrepo https://yum.repos.intel.com/oneapi oneAPI
 RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
 
-# prerequisites
-RUN $ZYPPERCMD install awk
+# prerequisites for oneAPI
+RUN $ZYPPERCMD install -t pattern devel_basis
+# prerequisites for /opt/intel/oneapi/setvars.sh
+RUN $ZYPPERCMD install awk ps
 
 # install oneAPI
-RUN $ZYPPERCMD install intel-basekit
+RUN $ZYPPERCMD install intel-oneapi-base-toolkit intel-oneapi-mkl
 RUN $ZYPPERCMD clean -a
