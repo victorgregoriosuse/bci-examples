@@ -13,7 +13,7 @@
 
 ### 1. Build Image
 ```bash
-docker buildx build -t bci-jupyterlab -f Dockerfile .
+docker buildx build -t bci-jupyterlab -f Containerfile .
 ```
 
 ### 2. Configure & Run
