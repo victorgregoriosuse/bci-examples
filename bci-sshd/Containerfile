@@ -1,5 +1,8 @@
-FROM registry.suse.com/bci/bci-base:latest
+FROM registry.suse.com/bci/bci-base:15.7
 ENV ZYPPERCMD="zypper --non-interactive"
+
+# update packages
+RUN $ZYPPERCMD update
 
 ARG PASSWD
 ENV PASSWD=${PASSWD}
