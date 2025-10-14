@@ -6,7 +6,7 @@
 
 # Build
 
-```
+```bash
 docker buildx build -t bci-osc -f Containerfile .
 ```
 
