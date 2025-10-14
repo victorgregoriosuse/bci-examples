@@ -17,7 +17,7 @@ zypper install crun
 
 # Build Container
 
-```
+```bash
 podman build -t sle-vllm -f Containerfile
 ```
 

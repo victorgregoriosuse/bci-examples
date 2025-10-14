@@ -1,5 +1,8 @@
-FROM registry.suse.com/bci/bci-base:latest
+FROM registry.suse.com/bci/bci-base:15.7
 ENV ZYPPERCMD="zypper --non-interactive"
+
+# update packages
+RUN $ZYPPERCMD update
 
 # requirements 
 RUN $ZYPPERCMD install python3 python3-devel wget awk
