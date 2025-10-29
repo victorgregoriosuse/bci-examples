@@ -1,0 +1,28 @@
+# https://registry.suse.com/
+FROM registry.suse.com/bci/bci-base:15.7
+
+# packages
+ENV ZYPPERCMD="zypper --non-interactive"
+ENV TAG="v0.1.10"
+
+# update packages
+RUN $ZYPPERCMD update
+
+# requirements
+RUN $ZYPPERCMD install git psutils make gcc awk python311 python311-devel python311-pip python311-virtualenv
+
+# clean up
+RUN $ZYPPERCMD clean --all 
+
+# Create a virtual environment
+RUN python3.11 -m venv /opt/venv
+
+# Add the venv to the PATH
+ENV PATH="/opt/venv/bin:$PATH"
+
+# install
+RUN pip3.11 install --upgrade pip
+RUN pip3.11 install git+https://github.com/PlainsightAI/openfilter.git@${TAG}#egg=openfilter[all]
+
+# Default command
+CMD ["bash"]
