@@ -15,10 +15,10 @@ RUN $ZYPPERCMD install git psutils make gcc awk python311 python311-devel python
 RUN $ZYPPERCMD clean --all 
 
 # Create a virtual environment
-RUN python3.11 -m venv /opt/venv
+RUN python3.11 -m venv /app/venv
 
 # Add the venv to the PATH
-ENV PATH="/opt/venv/bin:$PATH"
+ENV PATH="/app/venv/bin:$PATH"
 
 # install
 RUN pip3.11 install --upgrade pip
