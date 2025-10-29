@@ -4,9 +4,12 @@
 # https://www.intel.com/content/www/us/en/developer/tools/oneapi/toolkits.html#base-kit
 
 # https://registry.suse.com/
-FROM registry.suse.com/bci/bci-base:latest
+FROM registry.suse.com/bci/bci-base:15.7
 
 ENV ZYPPERCMD="zypper --non-interactive"
+
+# update packages
+RUN $ZYPPERCMD update
 
 RUN $ZYPPERCMD addrepo https://yum.repos.intel.com/oneapi oneAPI
 RUN rpm --import https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB

@@ -20,7 +20,7 @@
 
 ### 1. Build Image
 ```bash
-docker buildx build -t bci-jupyterhub -f Dockerfile .
+docker buildx build -t bci-jupyterhub -f Containerfile .
 ```
 
 ### 2. Configure & Run

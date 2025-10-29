@@ -8,11 +8,11 @@
 - Storage: Resulting image is ~12.5GB
 
 # Build
-```
-podman build -t bci-oneapi -f Containerfile .
+```bash
+docker buildx build -t bci-oneapi -f Containerfile .
 ```
 
 # Run
 ```
-podman run -it bci-oneapi
+docker run -it bci-oneapi
 ```
