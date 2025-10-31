@@ -15,9 +15,9 @@ This setup launches two services:
 *   **`mlflow_server`**: The MLflow tracking server.
 *   **`mlflow_db`**: The PostgreSQL database backend.
 
-### `psycopg2-binary` Installation
+### `psycopg2` Installation
 
-To enable communication between the MLflow server and the PostgreSQL database, the `psycopg2-binary` package is installed within the `mlflow_server` container upon startup. `psycopg2-binary` is a pre-compiled version of the `psycopg2` Python library, which acts as a PostgreSQL adapter for Python.
+To enable communication between the MLflow server and the PostgreSQL database, the `psycopg2` package, a PostgreSQL adapater for Python, is installed within the `mlflow_server` container upon startup. 
 
 ## Security
 
