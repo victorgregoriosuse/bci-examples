@@ -1,7 +1,26 @@
-# bci-examples
-SUSE SLE BCI Examples
+# SLE BCI & SUSE Rancher Application Collection Examples
 
-# SLE BCI
-SUSE Linux Enterprise Base Container Images (SLE BCI) provide truly open, flexible, and secure container images and application development tools. The images consist of container environments based on SUSE Linux Enterprise and designed to be a secure base for any containerized workload.
+This repository contains a collection of examples demonstrating how to use and integrate various open-source software with SUSE's enterprise-grade container technologies.
 
-For more information: https://www.suse.com/products/base-container-images/
+## Examples Overview
+
+The examples are organized by category, each in its own directory:
+
+| Prefix      | Description                                                      |
+| :---------- | :--------------------------------------------------------------- |
+| `bci-*`     | Examples of open-source software installed on a SLE BCI container. |
+| `ai-*`      | Example uses of AI/ML software from the SUSE Application Collection. |
+| `mlflow`    | A multi-container MLflow setup using Docker Compose.             |
+| `ollama-*`  | A chat application using Ollama with OpenTelemetry.              |
+
+## Core Technologies
+
+This repository primarily showcases the following SUSE technologies:
+
+*   **[SLE Base Container Images (BCI)](https://www.suse.com/products/base-container-images/)**: Truly open, flexible, and secure container images based on SUSE Linux Enterprise, designed to be a secure foundation for any containerized workload.
+
+*   **[SUSE Rancher Application Collection](https://apps.rancher.io/)**: A curated and continuously updated collection of trusted applications for building and running cloud-native workloads.
+
+## Getting Started
+
+Each example is self-contained within its own directory. Please refer to the `README.md` file inside each example's directory for specific instructions on how to build and run it.
