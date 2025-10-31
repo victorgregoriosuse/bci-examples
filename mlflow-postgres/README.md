@@ -4,7 +4,7 @@
 
 This directory contains an example `docker-compose.yml` file for deploying an MLflow tracking server with a PostgreSQL backend.
 
-The containers used in this example are from the SUSE Rancher Application Collection:
+The containers used in this example are from the SUSE Application Collection:
 - `dp.apps.rancher.io/containers/mlflow:3.5.0`
 - `dp.apps.rancher.io/containers/postgresql:18.0`
 
