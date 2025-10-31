@@ -1,4 +1,4 @@
-# SLE BCI & SUSE Rancher Application Collection Examples
+# SLE BCI & SUSE Application Collection Examples
 
 This repository contains a collection of examples demonstrating how to use and integrate various open-source software with SUSE's enterprise-grade container technologies.
 
