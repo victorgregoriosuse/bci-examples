@@ -15,9 +15,9 @@ This setup launches two services:
 *   **`mlflow_server`**: The MLflow tracking server.
 *   **`mlflow_db`**: The PostgreSQL database backend.
 
-### `psycopg2` Installation
+### `psycopg2-binary` Installation
 
-To enable communication between the MLflow server and the PostgreSQL database, the `psycopg2` package, a PostgreSQL adapater for Python, is installed within the `mlflow_server` container upon startup. 
+To enable communication between the MLflow server and the PostgreSQL database, the `psycopg2-binary` package, a PostgreSQL adapater for Python, is installed within the `mlflow_server` container upon startup. This package is a pre-compiled binary version of `psycopg2` and avoids the need for build-time dependencies. 
 
 ## Security
 
@@ -53,4 +53,4 @@ docker compose down --volumes
 
 - [MLflow Documentation](https://mlflow.org/docs/latest/index.html)
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- [psycopg2 Documentation](https://www.psycopg.org/docs/)
+- [psycopg2 Documentation](https://www.psycopg.org/docs/install.html#binary-installation)
