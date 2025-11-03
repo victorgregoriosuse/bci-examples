@@ -1,0 +1,37 @@
+services:
+  mariadb:
+    image: dp.apps.rancher.io/containers/mariadb:11.8.3
+    container_name: mlflow_db
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=mlflow
+      - MARIADB_DATABASE=mlflow
+      - MARIADB_USER=mlflow
+      - MARIADB_PASSWORD=mlflow
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  mlflow:
+    image: dp.apps.rancher.io/containers/mlflow:3.5.0
+    container_name: mlflow_server
+    restart: always
+    command: >
+      sh -c "
+      pip install pymysql &&
+      mlflow server
+      --backend-store-uri mysql+pymysql://mlflow:mlflow@mariadb:3306/mlflow
+      --default-artifact-root /mlflow/artifacts
+      --host 0.0.0.0
+      "
+    ports:
+      - "5001:5000"
+    volumes:
+      - mlflow_artifacts:/mlflow/artifacts
+    depends_on:
+      - mariadb
+
+volumes:
+  mariadb_data:
+  mlflow_artifacts:
