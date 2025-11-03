@@ -1,0 +1,17 @@
+services:
+  mlflow:
+    image: dp.apps.rancher.io/containers/mlflow:3.5.0
+    container_name: mlflow_server
+    restart: always
+    command: >
+      mlflow server
+      --backend-store-uri /mlflow/data
+      --default-artifact-root /mlflow/data
+      --host 0.0.0.0
+    ports:
+      - "5001:5000"
+    volumes:
+      - mlflow_data:/mlflow/data
+
+volumes:
+  mlflow_data:
